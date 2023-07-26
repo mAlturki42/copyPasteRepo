@@ -1,6 +1,9 @@
 # copyPasteRepo
 
 
+
+https://deliveringtechnology2018.atlassian.net/wiki/spaces/CC21S/pages/2490728473/QL-3+Inheritance+and+Polymorphism
+
 mvn archetype:generate -DarchetypeArtifactId=maven-archetype-quickstart
 
 
