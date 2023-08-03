@@ -1,5 +1,8 @@
 # copyPasteRepo
 
+Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "RUNSCRIPT FROM[*]"; expected "INTERSECTS, NOT, EXISTS, UNIQUE, INTERSECTS"; SQL statement:
+RUNSCRIPT FROM [42001-212]
+
 
 Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]BULK INSERT bonds FROM 'C:/Users/Admin/Downloads/db-bonds-data.csv' WITH ( FIELDTERMINATOR = ',', ROWTERMINATOR = '\\n', FIRSTROW = 2 )"; expected "BACKUP, BEGIN"; SQL statement:
 BULK INSERT bonds FROM 'C:/Users/Admin/Downloads/db-bonds-data.csv' WITH ( FIELDTERMINATOR = ',', ROWTERMINATOR = '\n', FIRSTROW = 2 ) [42001-212]
