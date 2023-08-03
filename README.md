@@ -1,5 +1,109 @@
 # copyPasteRepo
 
+
+data.SQL
+
+-- Insert data into the book table
+INSERT INTO book (name) VALUES ('trading_book_1'), ('trading_book_2'), ('Trading_book_3'), ('Trading_book_4'), ('Trading_book_6');
+
+-- Insert data into the userr table
+INSERT INTO userr (name, email, role) VALUES ('AZ Holdings Inc', 'azholdings@example.com', 'bond_holder'), 
+('Acme co', 'acmeco@example.com', 'bond_holder'),
+('Sovereign Investments', 'sovereigninvestments@example.com', 'bond_holder'),
+('Astra Trading Ltd', 'astratradingltd@example.com', 'bond_holder'),
+('Muncipal Gov Of Orange County', 'muncipalgovoforangecounty@example.com', 'bond_holder'),
+('Goldman Sachs', 'goldmansachs@example.com', 'bond_holder'),
+('UBS', 'ubs@example.com', 'bond_holder'),
+('Barclays', 'barclays@example.com', 'bond_holder'),
+('British Telecom', 'britishtelecom@example.com', 'bond_holder'), 
+('Pension Holdings', 'pensionholdings@example.com', 'bond_holder'),
+('Zurich Pension fund 4', 'zurichpensionfund4@example.com', 'bond_holder');
+
+-- Insert data into the counterparty table
+INSERT INTO counterparty (name) VALUES ('BNPParibasIssu 4,37% Microsoft Corp (USD)'), ('Airbus 3.15%  USD'),
+('UBS Facebook (USD)'),
+('Amazon'),
+('HM Treasury United Kingdon'), 
+('TEMASEK FINL I LTD GLOBAL MEDIUM TERM NTS BOOK ENTRY REG S'),
+('First Norway Alpha Kl.IV');
+
+-- Insert data into the book_user table
+INSERT INTO book_user (book_id, user_id) VALUES (1, 1), (2, 2), (3, 3), (2, 4) (2, 3), (4, 5), (6, 5), (6, 6), (6, 7), (6, 8), (6, 9), (6, 10), (4, 11);
+
+-- Insert data into the security table
+INSERT INTO security (isin, cusip, issuer_name, maturity_date, coupon, type, face_value, currency, status) VALUES ('XS1988387210', NULL, 'BNPParibasIssu 4,37% Microsoft Corp (USD)', '2021-08-05', 4.37, 'CORP', 1000, 'USD', 'active'), 
+('USN0280EAR64','123456780','Airbus 3.15%  USD','2021-07-30',3.15,'CORP',900,'USD','active'),
+('A12356111','123456bh0','UBS Facebook (USD)','2021-09-30',2,'CORP',900,'USD','active'),
+('USU02320AG12','AMZN 3.15 08/22/27 REGS','Amazon','2021-08-03',3.15,'CORP',900,'USD','active'),
+(NULL,'BDCHBW8','HM Treasury United Kingdon','2021-08-09',0.75,'GOVN',900,'GBP','active'), 
+('US87973RAA86','87973RAA8','TEMASEK FINL I LTD GLOBAL MEDIUM TERM NTS BOOK ENTRY REG S','2021-08-06',2.02,'SOVN',690,'USD','active'),
+('IE00B29LNP31','87973RAA8','First Norway Alpha Kl.IV','2030-12-22',1.123,'SOVN',340,'USD','active');
+
+-- Insert data into the trades table
+INSERT INTO trades (book_id, security_id, counterparty_id, currency, status, quantity, unit_price, buy_sell, trade_date, settlement_date) VALUES (1, 1, 1, 'USD', 'open', 50, 90, 'buy', '2021-05-13', '2021-08-04'), (1, 1, 1, 'GBP', 'open', 40, 89.56, 'sell', '2021-02-04', '2021-08-04'), 
+(2, 2, 2, 'USD', 'open', 1000, 105.775, 'buy', '2021-05-13', '2021-08-23'), (2, 2, 2, 'GBP', 'open', 900, 105.775, 'sell', '2021-02-04', '2021-09-10'), 
+(3, 3, 3, 'USD', 'open', 50, 90, 'buy', '2021-05-13', '2021-08-23'), (2, 2, 2, 'USD', 'open', 1000, 105.775, 'buy', '2021-05-13', '2021-08-23'), 
+(2, 3, 3, 'USD', 'open', 50, 90, 'sell', '2021-05-13', '2021-08-23');
+
+
+
+
+
+
+
+
+
+
+Java:
+
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public List<Bond> getMatureBondsForRegisteredUsers(Connection conn) throws SQLException {
+    List<Bond> matureBonds = new ArrayList<>();
+
+    String sql = "SELECT b.* FROM Bonds b " +
+                 "JOIN book_user bu ON b.book_name = bu.book_id " +
+                 "JOIN userr u ON bu.user_id = u.id " +
+                 "WHERE b.maturity_date <= CURRENT_DATE()";
+
+    try (Statement stmt = conn.createStatement();
+         ResultSet rs = stmt.executeQuery(sql)) {
+        while (rs.next()) {
+            Bond bond = new Bond();
+            bond.setTradeType(rs.getString("trade_type"));
+            bond.setTradeCurrency(rs.getString("trade_currency"));
+            bond.setQuantity(rs.getInt("quantity"));
+            bond.setSettlementDate(rs.getDate("settlement_date"));
+            bond.setTradeStatus(rs.getString("trade_status"));
+            bond.setTradeDate(rs.getDate("trade_date"));
+            bond.setUnitPrice(rs.getFloat("unit_price"));
+            bond.setCouponPercent(rs.getFloat("coupon_percent"));
+            bond.setBondCurrency(rs.getString("bond_currency"));
+            bond.setCusip(rs.getString("cusip"));
+            bond.setFaceValue(rs.getFloat("face_value"));
+            bond.setIsin(rs.getString("isin"));
+            bond.setIssuerName(rs.getString("issuer_name"));
+            bond.setMaturityDate(rs.getDate("maturity_date"));
+            bond.setStatus(rs.getString("status"));
+            bond.setType(rs.getString("type"));
+            bond.setBookName(rs.getString("book_name"));
+            bond.setBondHolder(rs.getString("bond_holder"));
+
+            matureBonds.add(bond);
+        }
+    }
+
+    return matureBonds;
+}
+
+
+
+
+
+
 Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "CREATE TABLE Bonds ( trade_type VARCHAR(255) NOT NULL, trade_currency varchar(10) NOT NULL, quantity int NOT NULL,[*], settlement_date datetime NOT NULL, trade_status varchar(32) NOT NULL, trade_date datetime NOT NULL, unit_price float NOT NULL, coupon_percent float NOT NULL, bond_currency VARCHAR(10) NOT NULL, cusip varchar(50) DEFAULT NULL, face_value float NOT NULL, isin varchar(50) DEFAULT NULL, issuer_name varchar(255) NOT NULL, maturity_date datetime NOT NULL, status varchar(32) NOT NULL, type VARCHAR(255) NOT NULL, book_name VARCHAR(255) NOT NULL, bond_holder VARCHAR(255) NOT NULL )"; expected "identifier"; SQL statement:
 CREATE TABLE Bonds ( trade_type VARCHAR(255) NOT NULL, trade_currency varchar(10) NOT NULL, quantity int NOT NULL,, settlement_date datetime NOT NULL, trade_status varchar(32) NOT NULL, trade_date datetime NOT NULL, unit_price float NOT NULL, coupon_percent float NOT NULL, bond_currency VARCHAR(10) NOT NULL, cusip varchar(50) DEFAULT NULL, face_value float NOT NULL, isin varchar(50) DEFAULT NULL, issuer_name varchar(255) NOT NULL, maturity_date datetime NOT NULL, status varchar(32) NOT NULL, type VARCHAR(255) NOT NULL, book_name VARCHAR(255) NOT NULL, bond_holder VARCHAR(255) NOT NULL ) [42001-212]
 
