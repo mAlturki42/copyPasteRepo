@@ -1,5 +1,9 @@
 # copyPasteRepo
 
+Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "DROP [*]DATABASE IF EXISTS bonds"; expected "TABLE, INDEX, USER, SEQUENCE, CONSTANT, TRIGGER, VIEW, ROLE, ALIAS, SCHEMA, ALL, DOMAIN, TYPE, DATATYPE, AGGREGATE, SYNONYM"; SQL statement:
+DROP DATABASE IF EXISTS bonds [42001-212]
+
+
 
 
 https://deliveringtechnology2018.atlassian.net/wiki/spaces/CC21S/pages/2490728473/QL-3+Inheritance+and+Polymorphism
