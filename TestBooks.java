@@ -1,3 +1,108 @@
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Parameter 0 of constructor in com.db.grad.javaapi.controller.BookuserController required a bean of type 'com.db.grad.javaapi.service.BookuserHandler' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'com.db.grad.javaapi.service.BookuserHandler' in your configuration.
+
+
+
+
+BookuserController:
+package com.db.grad.javaapi.controller;
+
+
+import com.db.grad.javaapi.model.Book;
+import com.db.grad.javaapi.model.Bookuser;
+import com.db.grad.javaapi.model.Trades;
+import com.db.grad.javaapi.service.BookHandler;
+import com.db.grad.javaapi.service.BookuserHandler;
+import com.db.grad.javaapi.service.TradesHandler;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/v1")
+@CrossOrigin(origins = "http://localhost:3000")
+public class BookuserController {
+
+    private BookuserHandler bookuserService;
+
+    @Autowired
+    public BookuserController(BookuserHandler ds)
+    {
+        bookuserService = ds;
+    }
+
+    @GetMapping("/book_user")
+    public List <Bookuser> getAllBooksuser() {
+        return bookuserService.getAllBooksuser();
+    }
+
+}
+
+
+BookuserHandler:
+
+package com.db.grad.javaapi.service;
+
+import com.db.grad.javaapi.model.Bookuser;
+import com.db.grad.javaapi.repository.BookRepository;
+import com.db.grad.javaapi.repository.BookuserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
+
+public class BookuserHandler implements IBookuserService {
+
+    private BookuserRepository itsBookuserRepo;
+
+    @Autowired
+    public BookuserHandler( BookuserRepository bookuserRepo )
+    {
+        itsBookuserRepo = bookuserRepo;
+    }
+
+    @Override
+    public List<Bookuser> getAllBooksuser()
+    {
+        return itsBookuserRepo.findAll();
+    }
+}
+
+
+IBookuserService:
+
+package com.db.grad.javaapi.service;
+
+import com.db.grad.javaapi.model.Book;
+import com.db.grad.javaapi.model.Bookuser;
+
+import java.util.List;
+
+public interface IBookuserService {
+
+    public List<Bookuser> getAllBooksuser();
+
+}
+
+
+
+
+
+
+
+
+
 package com.qa;
 
 public class TestBooks {
