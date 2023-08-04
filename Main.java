@@ -1,3 +1,18 @@
+SELECT s.isin, s.cusip, s.issuer_name, s.maturity_date, s.coupon, s.type, s.face_value, s.currency  
+FROM security s  
+JOIN trades t ON t.security_id = s.id  
+JOIN book_user bu ON bu.book_id = t.book_id  
+WHERE bu.user_id = 2
+AND DATEDIFF(s.maturity_date, CURRENT_DATE()) BETWEEN -5 AND 5;
+Syntax error in SQL statement "SELECT s.isin, s.cusip, s.issuer_name, s.maturity_date, s.coupon, s.type, s.face_value, s.currency  \000d\000aFROM security s  \000d\000aJOIN trades t ON t.security_id = s.id  \000d\000aJOIN book_user bu ON bu.book_id = t.book_id  \000d\000aWHERE bu.user_id = 2 \000d\000aAND DATEDIFF(s[*].maturity_date, CURRENT_DATE()) BETWEEN -5 AND 5"; expected ","; SQL statement:
+SELECT s.isin, s.cusip, s.issuer_name, s.maturity_date, s.coupon, s.type, s.face_value, s.currency  
+FROM security s  
+JOIN trades t ON t.security_id = s.id  
+JOIN book_user bu ON bu.book_id = t.book_id  
+WHERE bu.user_id = 2
+AND DATEDIFF(s.maturity_date, CURRENT_DATE()) BETWEEN -5 AND 5 [42001-212] 42001/42001 (Help)
+
+
 import java.sql.*;
 import java.util.*;
 
