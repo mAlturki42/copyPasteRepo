@@ -1,42 +1,78 @@
-package com.qa;
+TradesRepository:
 
+package com.db.grad.javaapi.repository;
 
-public class Book {
-    private String name;
-    private String[] authors;
-    private double price;
+import com.db.grad.javaapi.model.Trades;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
-    public Book(String name, String[] authors, double price) {
-        this.name = name;
-        this.authors = authors;
-        this.price = price;
+import java.util.List;
+
+@Repository
+public interface TradesRepository extends JpaRepository<Trades, Long>
+{
+    @Query(nativeQuery = true, value = "select * from trades")
+    List<Trades> findAll();
+}
+
+TradesController:
+
+package com.db.grad.javaapi.controller;
+
+import com.db.grad.javaapi.model.Trades;
+import com.db.grad.javaapi.service.TradesHandler;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/v1")
+@CrossOrigin(origins = "http://localhost:3000")
+public class TradesController {
+    private TradesHandler tradesService;
+
+    @Autowired
+    public TradesController(TradesHandler ds)
+    {
+        tradesService = ds;
     }
 
-    public String getName() {
-        return name;
+    @GetMapping("/trades")
+    public List <Trades> getAllTrades() {
+        return tradesService.getAllTrades();
     }
+}
 
-    public void setName(String name) {
-        this.name = name;
-    }
 
-    public String[] getAuthors() {
-        return authors;
-    }
-    public void setAuthors(String[] authors) {
-        this.authors = authors;
-    }
+TradesHandler:
 
-    public double getPrice() {
-        return price;
-    }
+package com.db.grad.javaapi.service;
 
-    public void setPrice(double price) {
-        this.price = price;
+import com.db.grad.javaapi.model.Trades;
+import com.db.grad.javaapi.repository.TradesRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class TradesHandler implements ITradesService
+{
+    private TradesRepository itsTradesRepo;
+
+    @Autowired
+    public TradesHandler( TradesRepository tradeRepo )
+    {
+        itsTradesRepo = tradeRepo;
     }
 
     @Override
-    public String toString() {
-        return "Book [name=" + name + ", authors=" + Arrays.toString(authors) + ", price=" + price + "]";
+    public List<Trades> getAllTrades()
+    {
+        return itsTradesRepo.findAll();
     }
 }
+
+ITradesService
