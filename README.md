@@ -1,4 +1,59 @@
 # copyPasteRepo
+
+
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+
+public class BondViewer {
+    private Connection connection;
+
+    public BondViewer(Connection connection) {
+        this.connection = connection;
+    }
+
+    public List<Bond> getMaturedBondsForUser(int userId) {
+        List<Bond> bonds = new ArrayList<>();
+        String query = "SELECT b.* FROM Bonds b " +
+                "INNER JOIN book_user bu ON b.book_name = bu.book_id " +
+                "INNER JOIN userr u ON bu.user_id = u.id " +
+                "WHERE u.id = ? AND b.maturity_date <= CURRENT_DATE()";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, userId);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                Bond bond = new Bond();
+                bond.setTradeType(resultSet.getString("trade_type"));
+                bond.setTradeCurrency(resultSet.getString("trade_currency"));
+                bond.setQuantity(resultSet.getInt("quantity"));
+                bond.setSettlementDate(resultSet.getString("settlement_date"));
+                bond.setTradeStatus(resultSet.getString("trade_status"));
+                bond.setTradeDate(resultSet.getString("trade_date"));
+                bond.setUnitPrice(resultSet.getFloat("unit_price"));
+                bond.setCouponPercent(resultSet.getFloat("coupon_percent"));
+                bond.setBondCurrency(resultSet.getString("bond_currency"));
+                bond.setCusip(resultSet.getString("cusip"));
+                bond.setFaceValue(resultSet.getFloat("face_value"));
+                bond.setIsin(resultSet.getString("isin"));
+                bond.setIssuerName(resultSet.getString("issuer_name"));
+                bond.setMaturityDate(resultSet.getString("maturity_date"));
+                bond.setStatus(resultSet.getString("status"));
+                bond.setType(resultSet.getString("type"));
+                bond.setBookName(resultSet.getString("book_name"));
+                bond.setBondHolder(resultSet.getString("bond_holder"));
+                bonds.add(bond);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return bonds;
+    }
+}
+
+
 DROP ALL OBJECTS;
 
 CREATE TABLE Bonds (
