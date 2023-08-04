@@ -1,3 +1,7 @@
+Caused by: java.lang.NullPointerException: Cannot read the array length because "<local1>" is null
+
+
+
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.Objects;
