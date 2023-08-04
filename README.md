@@ -1,5 +1,10 @@
 # copyPasteRepo
 
+
+Caused by: org.h2.jdbc.JdbcSQLIntegrityConstraintViolationException: Referential integrity constraint violation: "CONSTRAINT_20: PUBLIC.BOOK_USER FOREIGN KEY(BOOK_ID) REFERENCES PUBLIC.BOOK(ID) (6)"; SQL statement:
+INSERT INTO book_user (book_id, user_id) VALUES (1, 1), (2, 2), (3, 3), (2, 4), (2, 3), (4, 5), (6, 5), (6, 6), (6, 7), (6, 8), (6, 9), (6, 10), (4, 11) [23506-212]
+
+
 g command : Error executing DDL "create table user (id integer not null, email varchar(255) not null, name varchar(255) not null, role varchar(255) not null, primary key (id))" via JDBC Statement
 
 
