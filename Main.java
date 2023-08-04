@@ -1,3 +1,24 @@
+{"timestamp":"2023-08-04T18:32:10.427+00:00","message":"could not execute query; SQL [select * from trades]; nested exception is org.hibernate.exception.SQLGrammarException: could not execute query","details":"uri=/api/v1/trades"}
+
+package com.db.grad.javaapi.repository;
+
+import com.db.grad.javaapi.model.Trades;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+@Repository
+public interface TradesRepository extends JpaRepository<Trades, Long>
+{
+    @Query(nativeQuery = true, value = "select * from trades")
+    List<Trades> findAll();
+}
+
+
+
+
 SELECT s.isin, s.cusip, s.issuer_name, s.maturity_date, s.coupon, s.type, s.face_value, s.currency  
 FROM security s  
 JOIN trades t ON t.security_id = s.id  
