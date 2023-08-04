@@ -1,5 +1,7 @@
 # copyPasteRepo
 
+g command : Error executing DDL "create table user (id integer not null, email varchar(255) not null, name varchar(255) not null, role varchar(255) not null, primary key (id))" via JDBC Statement
+
 
 data.SQL
 
