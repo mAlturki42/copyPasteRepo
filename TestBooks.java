@@ -1,4 +1,7 @@
+Caused by: org.hibernate.AnnotationException: Illegal attempt to map a non collection as a @OneToMany, @ManyToMany or @CollectionOfElements: com.db.grad.javaapi.model.Bookuser.book_id
 
+
+    
 Caused by: org.hibernate.AnnotationException: No identifier specified for entity: com.db.grad.javaapi.model.Bookuser
 
 
