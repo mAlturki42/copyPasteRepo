@@ -1,3 +1,5 @@
+{"timestamp":"2023-08-04T18:32:10.427+00:00","message":"could not execute query; SQL [select * from trades]; nested exception is org.hibernate.exception.SQLGrammarException: could not execute query","details":"uri=/api/v1/trades"}
+
 TradesRepository:
 
 package com.db.grad.javaapi.repository;
