@@ -1,3 +1,78 @@
+import javax.persistence.Embeddable;
+import java.io.Serializable;
+import java.util.Objects;
+
+@Embeddable
+public class BookUserId implements Serializable {
+    private int userId;
+    private int bookId;
+
+    public BookUserId() {}
+
+    public BookUserId(int userId, int bookId) {
+        this.userId = userId;
+        this.bookId = bookId;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public int getBookId() {
+        return bookId;
+    }
+
+    public void setBookId(int bookId) {
+        this.bookId = bookId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BookUserId that = (BookUserId) o;
+        return userId == that.userId &&
+                bookId == that.bookId;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId, bookId);
+    }
+}
+
+
+
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+
+@Entity
+public class BookUser {
+    @EmbeddedId
+    private BookUserId id;
+
+    public BookUser() {}
+
+    public BookUser(BookUserId id) {
+        this.id = id;
+    }
+
+    public BookUserId getId() {
+        return id;
+    }
+
+    public void setId(BookUserId id) {
+        this.id = id;
+    }
+}
+
+
+
+
 Caused by: org.hibernate.AnnotationException: Illegal attempt to map a non collection as a @OneToMany, @ManyToMany or @CollectionOfElements: com.db.grad.javaapi.model.Bookuser.book_id
 
 
