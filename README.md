@@ -1,6 +1,15 @@
 # copyPasteRepo
 
 
+
+
+"SELECT DISTINCT s.* FROM security s " +
+                "INNER JOIN trades t ON s.id = t.security_id " +
+                "WHERE s.maturity_date > CURRENT_DATE()"
+
+
+
+                
 Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "CREATE TABLE [*]user ( id int NOT NULL AUTO_INCREMENT PRIMARY KEY, name varchar(255) NOT NULL, email varchar(255) NOT NULL, role varchar(255) NOT NULL )"; expected "identifier"; SQL statement:
 CREATE TABLE user ( id int NOT NULL AUTO_INCREMENT PRIMARY KEY, name varchar(255) NOT NULL, email varchar(255) NOT NULL, role varchar(255) NOT NULL ) [42001-212]
 
