@@ -1,6 +1,12 @@
 # copyPasteRepo
 
 
+SELECT s.isin, s.cusip, s.issuer_name, s.maturity_date, s.coupon, s.type, s.face_value, s.currency 
+FROM security s 
+JOIN trades t ON t.security_id = s.id 
+JOIN book_user bu ON bu.book_id = t.book_id 
+WHERE bu.user_id = ? AND DATEDIFF('day', s.maturity_date, '2021-08-02') BETWEEN -5 AND 5
+
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
