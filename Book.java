@@ -1,3 +1,55 @@
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+
+public class BondViewer {
+    private Connection connection;
+
+    public BondViewer(Connection connection) {
+        this.connection = connection;
+    }
+
+    public List<Security> getBondsForUser(int userId) {
+        List<Security> securities = new ArrayList<>();
+        String query = "SELECT DISTINCT s.* FROM security s " +
+                "INNER JOIN trades t ON s.id = t.security_id " +
+                "INNER JOIN book_user bu ON t.book_id = bu.book_id " +
+                "INNER JOIN userr u ON bu.user_id = u.id " +
+                "WHERE u.id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, userId);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                Security security = new Security();
+                security.setId(resultSet.getInt("id"));
+                security.setIsin(resultSet.getString("isin"));
+                security.setCusip(resultSet.getString("cusip"));
+                security.setIssuerName(resultSet.getString("issuer_name"));
+                security.setMaturityDate(resultSet.getDate("maturity_date"));
+                security.setCoupon(resultSet.getFloat("coupon"));
+                security.setType(resultSet.getString("type"));
+                security.setFaceValue(resultSet.getFloat("face_value"));
+                security.setCurrency(resultSet.getString("currency"));
+                security.setStatus(resultSet.getString("status"));
+                securities.add(security);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return securities;
+    }
+}
+
+
+
+
+
+
+
+
+
 {"timestamp":"2023-08-04T18:32:10.427+00:00","message":"could not execute query; SQL [select * from trades]; nested exception is org.hibernate.exception.SQLGrammarException: could not execute query","details":"uri=/api/v1/trades"}
 
 TradesRepository:
