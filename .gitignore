@@ -1,3 +1,12 @@
+
+"SELECT security.* FROM security " +
+                "JOIN trades ON security.id = trades.security_id " +
+                "JOIN book_user ON trades.book_id = book_user.book_id " +
+                "WHERE book_user.user_id = ? AND security.type = 'bond'"
+
+
+
+
 ### IntelliJ IDEA ###
 out/
 !**/src/main/**/out/
