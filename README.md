@@ -1,5 +1,77 @@
 # copyPasteRepo
 
+{"timestamp":"2023-08-07T13:50:38.659+00:00","message":"could not execute query; SQL [SELECT s.isin, s.cusip, s.issuer_name, s.maturity_date, s.coupon, s.type, s.face_value, s.currency \nFROM security s \nJOIN trades t ON t.security_id = s.id \nJOIN book_user bu ON bu.book_id = t.book_id \nWHERE DATEDIFF('day', s.maturity_date, '2021-08-02') BETWEEN -5 AND 5\n]; nested exception is org.hibernate.exception.SQLGrammarException: could not execute query","details":"uri=/api/v1/maturityBonds"}
+
+package com.db.grad.javaapi.controller;
+
+import com.db.grad.javaapi.model.Book;
+import com.db.grad.javaapi.model.User;
+import com.db.grad.javaapi.service.SecurityHandler;
+import com.db.grad.javaapi.service.UserHandler;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+import java.util.Map;
+
+@RestController
+@RequestMapping("/api/v1")
+@CrossOrigin(origins = "http://localhost:3000")
+public class UserController {
+
+    private UserHandler userService;
+
+    @Autowired
+    public UserController(UserHandler ds)
+    {
+        userService = ds;
+    }
+
+    @GetMapping("/user")
+    public List<User> getAllUsers() {
+        return userService.getAllUsers();
+    }
+
+    @GetMapping("/maturityBonds")
+    public List<User>getMaturedBondsForUser() {
+        return userService.getMaturedBondsForUser();
+    }
+
+
+}
+
+
+and
+
+
+package com.db.grad.javaapi.repository;
+
+import com.db.grad.javaapi.model.Trades;
+import com.db.grad.javaapi.model.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public interface UserRepository extends JpaRepository<User, Long> {
+
+    @Query(nativeQuery = true, value = "SELECT s.isin, s.cusip, s.issuer_name, s.maturity_date, s.coupon, s.type, s.face_value, s.currency \n" +
+            "FROM security s \n" +
+            "JOIN trades t ON t.security_id = s.id \n" +
+            "JOIN book_user bu ON bu.book_id = t.book_id \n" +
+            "WHERE DATEDIFF('day', s.maturity_date, '2021-08-02') BETWEEN -5 AND 5\n")
+    List<User> findMaturedBondsForUser();
+}
+
 
 SELECT s.isin, s.cusip, s.issuer_name, s.maturity_date, s.coupon, s.type, s.face_value, s.currency 
 FROM security s 
